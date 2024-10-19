@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: testcase-pipeline-run-
+spec:
+  pipelineRef:
+    name: testcase-pipeline
+  params:
+    - name: git-url
+      value: "https://github.com/ambesh333/todo-test"
+    - name: branch
+      value: "main"
+  workspaces:
+    - name: myworkspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 50Mi

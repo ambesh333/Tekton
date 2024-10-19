@@ -1,0 +1,45 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: testcase-pipeline
+spec:
+  params:
+    - name: git-url
+      type: string
+      description: The GitHub repository URL
+    - name: branch
+      type: string
+      description: The branch to checkout
+  workspaces:
+    - name: myworkspace
+  tasks:
+    - name: fetch-repository
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: myworkspace
+      params:
+        - name: url
+          value: "$(params.git-url)"
+        - name: deleteExisting
+          value: "true"
+        - name: branch
+          value: "$(params.branch)"
+    - name: build
+      taskRef:
+        name: kaniko
+      runAfter:
+        - fetch-repository
+      params:
+        - name: IMAGE
+          value: ghcr.io/wlun001/hello-world
+        - name: CONTEXT
+          value: ./
+        - name: DOCKERFILE
+          value: $(workspaces.source.path)/Dockerfile
+        - name: EXTRA_ARGS
+          value: ["--no-push"] #Donot push to Registry
+      workspaces:
+        - name: source
+          workspace: myworkspace
