@@ -1,10 +1,10 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: testcase-pipeline-run-
+  generateName: example-pipeline-run-
 spec:
   pipelineRef:
-    name: testcase-pipeline
+    name: example-pipeline
   params:
     - name: git-url
       value: "https://github.com/ambesh333/todo-test"
