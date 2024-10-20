@@ -40,10 +40,10 @@ spec:
           workspace: myworkspace
       params:
         - name: url
-          value: "$(params.git-url)"
+          value: "https://github.com/$(params.git-url).git"
         - name: deleteExisting
           value: "true"
-        - name: branch
+        - name: revision #git-clone sets branch based on this tag
           value: "$(params.branch)"
     - name: build
       taskRef:

@@ -2,42 +2,13 @@ apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
   name: github-template
-# spec:
-#   params:
-#     - name: action
-#     - name: pull_request_id
-#     - name: git-url
-#     - name: branch
-#     - name: sha
-#   resourcetemplates:
-#     - apiVersion: tekton.dev/v1beta1
-#       kind: PipelineRun
-#       metadata:
-#         generateName: pullrequest-pipeline-run-
-#       spec:
-#         pipelineRef:
-#           name: testcase-pipeline
-#         params:
-#           - name: action
-#             value: "$(tt.params.action)"
-#           - name: pull_request_id
-#             value: "$(tt.params.pull_request_id)"
-#           - name: git-url
-#             value: "$(tt.params.git-url)"
-#           - name: branch
-#             value: "$(tt.params.branch)"
-#           - name: sha
-#             value: "$(tt.params.sha)"
-#         workspaces:
-#           - name: myworkspace
-#             volumeClaimTemplate:
-#               spec:
-#                 accessModes:
-#                   - ReadWriteOnce
-#                 resources:
-#                   requests:
-#                     storage: 50Mi
 spec:
+  params:
+    - name: action
+    - name: pull_request_id
+    - name: git-url
+    - name: branch
+    - name: sha
   resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
@@ -45,12 +16,18 @@ spec:
         generateName: pullrequest-pipeline-run-
       spec:
         pipelineRef:
-          name: example-pipeline
+          name: testcase-pipeline
         params:
+          - name: action
+            value: "$(tt.params.action)"
+          - name: pull_request_id
+            value: "$(tt.params.pull_request_id)"
           - name: git-url
-            value: "https://github.com/ambesh333/todo-test"
+            value: "$(tt.params.git-url)"
           - name: branch
-            value: "main"
+            value: "$(tt.params.branch)"
+          - name: sha
+            value: "$(tt.params.sha)"
         workspaces:
           - name: myworkspace
             volumeClaimTemplate:
@@ -59,4 +36,4 @@ spec:
                   - ReadWriteOnce
                 resources:
                   requests:
-                    storage: 50Mi
+                    storage: 1Gi

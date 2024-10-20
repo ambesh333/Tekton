@@ -29,4 +29,3 @@ spec:
         - ref: github-binding # TriggerBinding
       template:
         ref: github-template # TriggerTemplate
-# kubectl create secret generic github-webhook-secret --from-literal=secret=1234567
